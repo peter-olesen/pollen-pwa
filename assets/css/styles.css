@@ -28,9 +28,11 @@ body {
 }
 
 select {
-    height: 60px;
-    width: 200px;
-    margin-top: 2rem;
+    background: var(--blueish);
+    outline: 0;
+    border: none;
+    color: var(--white);
+    width: auto;
 }
 
 #app-main {
