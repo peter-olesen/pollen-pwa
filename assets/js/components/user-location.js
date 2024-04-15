@@ -28,8 +28,18 @@ export const getUserLocation = async () => {
 
         console.log(userLocationData)
       
-        // Post user location name in the dom elm user-city
-        const locationName = userLocationData.address.city;
+        let locationName;
+        // Check for both city and town in the API response (adjust paths based on your API structure)
+        if (userLocationData.address.city) {
+          locationName = userLocationData.address.city;
+        } else if (userLocationData.address.town) {
+          locationName = userLocationData.address.town;
+        } else {
+          // Handle cases where neither city nor town is found (optional)
+          console.warn("Unable to find city or town in response data.");
+          locationName = ""; // Or set a default value
+        }
+      
         const userCityElm = document.getElementById('user-city');
         userCityElm.textContent = locationName;
       
