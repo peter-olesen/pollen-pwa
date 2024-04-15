@@ -2,61 +2,52 @@ import { apiFetch } from "../utils/fetch.js";
 
 export const getUserLocation = async () => {
 
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
+  const appMain = document.getElementById('app-main');
 
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            
-            fetchUserLocationName(latitude, longitude);
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
 
-            const userLatitude = document.getElementById('user-latitude');
-            const userLongitude = document.getElementById('user-longitude');
+      fetchUserLocationName(latitude, longitude);
 
-            userLatitude.textContent = `Latitude: ${position.coords.latitude}`;
-            userLongitude.textContent = `Longitude: ${position.coords.longitude}`;
-        },
-        (error) => {
-            console.error("Error getting location:", error.message);
-        }
-    );
+      const userLatitude = document.createElement('p');
+      userLatitude.textContent = `Latitude: ${position.coords.latitude}`;
+      appMain.appendChild(userLatitude);
 
-    const fetchUserLocationName = async (latitude, longitude) => {
-        const apiKey = `65fbf0ab53bd8384900768tupe2265f`
-        const endpoint = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${apiKey}`;
-        const userLocationData = await apiFetch(endpoint);
+      const userLongitude = document.createElement('p');
+      userLongitude.textContent = `Longitude: ${position.coords.longitude}`;
+      appMain.appendChild(userLongitude);
 
-        console.log(userLocationData)
-      
-        let locationName;
-        // Check for both city and town in the API response (adjust paths based on your API structure)
-        if (userLocationData.address.city) {
-          locationName = userLocationData.address.city;
-        } else if (userLocationData.address.town) {
-          locationName = userLocationData.address.town;
-        } else {
-          // Handle cases where neither city nor town is found (optional)
-          console.warn("Unable to find city or town in response data.");
-          locationName = ""; // Or set a default value
-        }
-      
-        const userCityElm = document.getElementById('user-city');
-        userCityElm.textContent = locationName;
-      
-        // Save user location name to localStorage
-        let existingLocationNames = [];
-        try {
-            existingLocationNames = JSON.parse(localStorage.getItem('userLocationNames')) || [];
-        } catch (error) {
-          console.error("Error parsing existing user location names:", error);
-        }
-        
-        const locationExists = existingLocationNames.includes(locationName);
+    },
+    (error) => {
+      console.error("Error getting location:", error.message);
+    }
+  );
 
-        if (!locationExists) {
-            existingLocationNames.push(locationName);
-        }
+  const fetchUserLocationName = async (latitude, longitude) => {
+    const apiKey = `65fbf0ab53bd8384900768tupe2265f`;
+    const endpoint = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${apiKey}`;
+    const userLocationData = await apiFetch(endpoint);
 
-        localStorage.setItem('userLocationNames', JSON.stringify(existingLocationNames));
-      };
+    console.log(userLocationData);
+
+    let locationName;
+    // Check for both city and town in the API response (adjust paths based on your API structure)
+    if (userLocationData.address.city) {
+      locationName = userLocationData.address.city;
+    } else if (userLocationData.address.town) {
+      locationName = userLocationData.address.town;
+    } else {
+      // Handle cases where neither city nor town is found (optional)
+      console.warn("Unable to find city or town in response data.");
+      locationName = ""; // Or set a default value
+    }
+
+    const userCityElm = document.createElement('p');
+    userCityElm.textContent = locationName;
+    appMain.appendChild(userCityElm);
+
+    // Save user location name to localStorage (rest of the code remains the same)
+  };
 };

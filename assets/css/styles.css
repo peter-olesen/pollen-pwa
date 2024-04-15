@@ -1,4 +1,54 @@
-/* Write cool CSS below */
+:root {
+    --blueish: #4BA598;
+    --white: #FFFFFF;
+    --black: #000000;
+}
+
+body {
+    background: var(--white);
+    margin: 0;
+}
+
+#app-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100vw;
+    height: 100%;
+}
+
+#app-header {
+    display: flex;
+    flex-direction: center;
+    justify-content: center;
+    width: 100vw;
+    height: 140px;
+    background: var(--blueish);
+    color: var(--white)
+}
+
+select {
+    height: 60px;
+    width: 200px;
+    margin-top: 2rem;
+}
+
+#app-main {
+    /* position: absolute; */
+}
+
+#app-menu {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 75px;
+    background: var(--blueish);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+}
 
 .bold {
     font-weight: bold;
