@@ -53,16 +53,16 @@ export const getUserLocation = async () => {
         userCityElm.textContent = locationName;
         appMain.appendChild(userCityElm);
 
-        let existingLocationNames = [];
+        let existingLocationNames = new Set();
         try {
-            existingLocationNames = JSON.parse(localStorage.getItem('userLocationNames')) || [];
-        } catch(error) {
-            console.error("Error parsing existing user location names:", error);
+        const storedLocations = JSON.parse(localStorage.getItem('userLocationNames')) || new Set();
+        storedLocations.forEach(location => existingLocationNames.add(location));
+        } catch (error) {
+        console.error("Error parsing existing user location names:", error);
         }
 
-        if (!existingLocationNames.includes(locationName)) {
-            existingLocationNames.push(locationName);
-        }
+        if (!existingLocationNames.has(locationName)) {
+        existingLocationNames.add(locationName);
 
         const populateSelect = () => {
             selectElm.innerHTML ="";
@@ -78,5 +78,6 @@ export const getUserLocation = async () => {
 
         localStorage.setItem('userLocationNames', JSON.stringify(existingLocationNames));
 
-    }
+    };
+};
 };
