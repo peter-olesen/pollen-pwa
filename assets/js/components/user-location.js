@@ -60,7 +60,9 @@ export const getUserLocation = async () => {
             console.error("Error parsing existing user location names:", error);
         }
 
-        existingLocationNames.push(locationName);
+        if (!existingLocationNames.includes(locationName)) {
+            existingLocationNames.push(locationName);
+        }
 
         const populateSelect = () => {
             selectElm.innerHTML ="";
