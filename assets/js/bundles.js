@@ -1,3 +1,3 @@
-import { logMessage } from "./components/app.js";
+import { getUserLocation } from "./components/user-location.js";
 
-logMessage();
+getUserLocation();

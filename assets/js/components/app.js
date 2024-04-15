@@ -6,9 +6,4 @@ export const logMessage = async () => {
   const endpoint = 'https://catfact.ninja/fact'; // Change the endpoint variable to the desired endpoint
   const data = await apiFetch(endpoint);
 //   console.log(data); // Console logs the data received from the endpoint
-  
-  // Random Cat Fact View Code
-//   console.log(data.fact); // Console logs the data from data.fact received from the endpoint
-  const catFactElm = document.getElementById('cat-fact');
-  catFactElm.textContent = data.fact;
 }
