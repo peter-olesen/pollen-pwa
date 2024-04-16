@@ -1,38 +1,39 @@
 import { apiFetch } from "../utils/fetch.js";
+import { getPollenData } from "./pollen.js";
 
 export const getUserLocation = async () => {
+    const appHeader = document.getElementById('app-header');
+    const selectElm = document.createElement('select');
+    selectElm.id = "location-dropdown";
+    appHeader.appendChild(selectElm);
 
-  const appHeader = document.getElementById('app-header');
-  const selectElm = document.createElement('select');
-  selectElm.id = "location-dropdown";
-  appHeader.appendChild(selectElm);
+    const appMain = document.getElementById('app-main');
 
-  const appMain = document.getElementById('app-main');
-
-  navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.getCurrentPosition(
     (position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
 
-      fetchUserLocationName(latitude, longitude);
+        fetchUserLocationName(latitude, longitude);
+        getPollenData(latitude, longitude);
 
-      const userLatitude = document.createElement('p');
-      userLatitude.textContent = `Latitude: ${position.coords.latitude}`;
-      appMain.appendChild(userLatitude);
+    //   const userLatitude = document.createElement('p');
+    //   userLatitude.textContent = `Latitude: ${position.coords.latitude}`;
+    //   appMain.appendChild(userLatitude);
 
-      const userLongitude = document.createElement('p');
-      userLongitude.textContent = `Longitude: ${position.coords.longitude}`;
-      appMain.appendChild(userLongitude);
+    //   const userLongitude = document.createElement('p');
+    //   userLongitude.textContent = `Longitude: ${position.coords.longitude}`;
+    //   appMain.appendChild(userLongitude);
 
     },
     (error) => {
-      console.error("Error getting location:", error.message);
+        console.error("Error getting location:", error.message);
     }
-  );
+    );
 
 
 
-  const fetchUserLocationName = async (latitude, longitude) => {
+    const fetchUserLocationName = async (latitude, longitude) => {
     const apiKey = `65fbf0ab53bd8384900768tupe2265f`;
     const endpoint = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${apiKey}`;
     const userLocationData = await apiFetch(endpoint);
@@ -42,41 +43,41 @@ export const getUserLocation = async () => {
     let locationName;
 
     if (userLocationData.address.city) {
-      locationName = userLocationData.address.city;
+        locationName = userLocationData.address.city;
     } else if (userLocationData.address.town) {
-      locationName = userLocationData.address.town;
+        locationName = userLocationData.address.town;
     } else {
-      console.warn("Unable to find city or town in response data.");
-      locationName = "";
+        console.warn("Unable to find city or town in response data.");
+        locationName = "";
     }
 
-    const userCityElm = document.createElement('p');
-    userCityElm.textContent = locationName;
-    appMain.appendChild(userCityElm);
+    // const userCityElm = document.createElement('p');
+    // userCityElm.textContent = locationName;
+    // appMain.appendChild(userCityElm);
 
     const populateSelect = (existingLocationNames) => {
         selectElm.innerHTML = ""; 
         existingLocationNames.forEach((option) => {
-          const optionElm = document.createElement("option");
-          optionElm.value = option;
-          optionElm.textContent = option;
-          selectElm.appendChild(optionElm);
+            const optionElm = document.createElement("option");
+            optionElm.value = option;
+            optionElm.textContent = option;
+            selectElm.appendChild(optionElm);
         });
-      };
+        };
 
-      let existingLocationNames = new Set();
-  try {
+        let existingLocationNames = new Set();
+    try {
     const storedLocations = JSON.parse(localStorage.getItem('userLocationNames')) || new Set();
     storedLocations.forEach(location => existingLocationNames.add(location));
-  } catch (error) {
+    } catch (error) {
     console.error("Error parsing existing user location names:", error);
-  }
+    }
 
-  const lowercaseLocationName = locationName;
-  existingLocationNames.add(lowercaseLocationName); // Always add the location (case-insensitive)
-  console.log("Added location:", locationName);
-  console.log("Existing locations:", Array.from(existingLocationNames));
-  populateSelect(existingLocationNames); // Call populateSelect with the updated set
-  localStorage.setItem('userLocationNames', JSON.stringify([...existingLocationNames]));
-      }
+    const addedLocationName = locationName;
+    existingLocationNames.add(addedLocationName); // Always add the location
+    //   console.log("Added location:", locationName);
+    //   console.log("Existing locations:", Array.from(existingLocationNames));
+    populateSelect(existingLocationNames); // Call populateSelect with the updated set
+    localStorage.setItem('userLocationNames', JSON.stringify([...existingLocationNames]));
+        }
   };
