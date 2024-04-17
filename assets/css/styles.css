@@ -2,11 +2,13 @@
     --blueish: #4BA598;
     --white: #FFFFFF;
     --black: #000000;
+    --gray: #F2F2F2;
 }
 
 body {
-    background: var(--white);
+    background: var(--gray);
     margin: 0;
+    overflow: auto;
 }
 
 #app-container {
