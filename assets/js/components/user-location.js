@@ -6,39 +6,37 @@ export const getUserLocation = async () => {
     const selectElm = document.createElement('select');
     selectElm.id = "location-dropdown";
     appHeader.appendChild(selectElm);
-
+  
     const appMain = document.getElementById('app-main');
+  
+    // Check for navigator.geolocation support
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
 
-    navigator.geolocation.getCurrentPosition(
-    (position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        console.log(latitude, longitude);
-        fetchUserLocationName(latitude, longitude);
-        getPollenData(latitude, longitude);
+          fetchUserLocationName(latitude, longitude);
+          getPollenData(latitude, longitude);
+        },
+        (error) => {
+          console.error("Error getting location:", error.message);
+        }
+      );
+    } else {
+      // Navigator.geolocation not supported
+        const errorMessageElm = document.createElement('p');
+        errorMessageElm.textContent = "This browser doesn't support location services.";
+        appMain.appendChild(errorMessageElm);
 
-    //   const userLatitude = document.createElement('p');
-    //   userLatitude.textContent = `Latitude: ${position.coords.latitude}`;
-    //   appMain.appendChild(userLatitude);
+        console.error("Error getting location:", error.message); // Log the error to the console
 
-    //   const userLongitude = document.createElement('p');
-    //   userLongitude.textContent = `Longitude: ${position.coords.longitude}`;
-    //   appMain.appendChild(userLongitude);
-
-    },
-    (error) => {
-        console.error("Error getting location:", error.message);
     }
-    );
-
-
 
     const fetchUserLocationName = async (latitude, longitude) => {
     const apiKey = `65fbf0ab53bd8384900768tupe2265f`;
     const endpoint = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${apiKey}`;
     const userLocationData = await apiFetch(endpoint);
-
-    // console.log(userLocationData);
 
     let locationName;
 
@@ -51,10 +49,6 @@ export const getUserLocation = async () => {
         locationName = "";
     }
 
-    // const userCityElm = document.createElement('p');
-    // userCityElm.textContent = locationName;
-    // appMain.appendChild(userCityElm);
-
     const populateSelect = (existingLocationNames) => {
         selectElm.innerHTML = ""; 
         existingLocationNames.forEach((option) => {
@@ -66,18 +60,16 @@ export const getUserLocation = async () => {
         };
 
         let existingLocationNames = new Set();
-    try {
-    const storedLocations = JSON.parse(localStorage.getItem('userLocationNames')) || new Set();
-    storedLocations.forEach(location => existingLocationNames.add(location));
-    } catch (error) {
-    console.error("Error parsing existing user location names:", error);
-    }
-
-    const addedLocationName = locationName;
-    existingLocationNames.add(addedLocationName);
-    //   console.log("Added location:", locationName);
-    //   console.log("Existing locations:", Array.from(existingLocationNames));
-    populateSelect(existingLocationNames); 
-    localStorage.setItem('userLocationNames', JSON.stringify([...existingLocationNames]));
+        try {
+        const storedLocations = JSON.parse(localStorage.getItem('userLocationNames')) || new Set();
+        storedLocations.forEach(location => existingLocationNames.add(location));
+        } catch (error) {
+        console.error("Error parsing existing user location names:", error);
         }
+
+        const addedLocationName = locationName;
+        existingLocationNames.add(addedLocationName);
+        populateSelect(existingLocationNames); 
+        localStorage.setItem('userLocationNames', JSON.stringify([...existingLocationNames]));
+    }
   };
