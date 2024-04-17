@@ -13,7 +13,7 @@ export const getUserLocation = async () => {
     (position) => {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-
+        console.log(latitude, longitude);
         fetchUserLocationName(latitude, longitude);
         getPollenData(latitude, longitude);
 
@@ -74,10 +74,10 @@ export const getUserLocation = async () => {
     }
 
     const addedLocationName = locationName;
-    existingLocationNames.add(addedLocationName); // Always add the location
+    existingLocationNames.add(addedLocationName);
     //   console.log("Added location:", locationName);
     //   console.log("Existing locations:", Array.from(existingLocationNames));
-    populateSelect(existingLocationNames); // Call populateSelect with the updated set
+    populateSelect(existingLocationNames); 
     localStorage.setItem('userLocationNames', JSON.stringify([...existingLocationNames]));
         }
   };
