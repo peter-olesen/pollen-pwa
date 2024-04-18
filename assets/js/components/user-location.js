@@ -91,6 +91,5 @@ export const getUserLocation = async () => {
     const latitude = parseFloat(locationParts[1]);
     const longitude = parseFloat(locationParts[2]);
 
-    getPollenData(latitude, longitude);
   });
 };
