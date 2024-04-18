@@ -51,13 +51,23 @@ export const getUserLocation = async () => {
 
     const populateSelect = (existingLocationNames) => {
         selectElm.innerHTML = ""; 
+    
+        // Add current location first
+        const optionElm = document.createElement("option");
+        optionElm.value = locationName;
+        optionElm.textContent = locationName;
+        optionElm.selected = true; // Set as selected by default
+        selectElm.appendChild(optionElm);
+    
         existingLocationNames.forEach((option) => {
             const optionElm = document.createElement("option");
             optionElm.value = option;
             optionElm.textContent = option;
             selectElm.appendChild(optionElm);
         });
-        };
+    };
+
+    populateSelect([locationName]); 
 
         let existingLocationNames = new Set();
         try {
