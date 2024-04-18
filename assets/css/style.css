@@ -1,0 +1,12 @@
+#app-main ul {
+  list-style: none;
+}
+#app-main li {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: solid 1px black;
+}
+#app-main img {
+  width: 100px;
+  height: 100px;
+}/*# sourceMappingURL=style.css.map */
