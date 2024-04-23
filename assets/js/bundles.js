@@ -1,3 +1,4 @@
-import { logMessage } from "./components/app.js";
+// import { logMessage } from "./components/app.js";
 
-logMessage();
+// logMessage();
+
