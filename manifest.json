@@ -8,22 +8,6 @@
     "display_override": ["fullscreen", "minimal-ui"],
     "display": "standalone",
     "orientation": "portrait-primary",
-    // "screenshots": [
-    //   {
-    //     "src": "assets/img/screenshot.png",
-    //     "sizes": "425x832",
-    //     "type": "image/png",
-    //     "form_factor": "wide",
-    //     "label": "PollenPWA"
-    //   },
-    //   {
-    //     "src": "assets/img/screenshot.png",
-    //     "sizes": "425x832",
-    //     "type": "image/png",
-    //     "form_factor": "narrow",
-    //     "label": "PollenPWA"
-    //   }
-    // ],
     "icons": [
       {
         "src": "assets/icons/icon-48-48.png",
