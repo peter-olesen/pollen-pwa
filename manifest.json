@@ -5,6 +5,7 @@
     "id": "/pollen-pwa/index.html",
     "description":"Progressive Web App that shows the latest Pollen numbers for your location.",
     "theme_color": "#4BA598",
+    "display_override": ["fullscreen", "minimal-ui"],
     "display": "standalone",
     "orientation": "portrait-primary",
     "screenshots": [
